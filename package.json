@@ -1,0 +1,11 @@
+{
+  "name": "branding-with-anna",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Anna Chernoshtan's branding and coaching website",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "vercel-build": "npm run build"
+  },
+  "engines": { "node": ">=22" }
+}
