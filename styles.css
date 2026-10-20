@@ -70,9 +70,9 @@ p:not(.serif),.lesson-body li,.about-copy .large-copy,.anna-perspective p,.servi
 /* Contact information and policy pages retain the editorial type and spacing. */
 .contact-links{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-top:12px}
 .contact-links a{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:5px;overflow-wrap:anywhere;max-width:100%}
-.booking-contact{max-width:1000px;margin:35px auto 0;padding-top:28px;border-top:1px solid var(--line)}
-.booking-contact .contact-links{display:grid;grid-template-columns:1fr 1fr;column-gap:8%;font-size:.9375rem}
+
+
 footer{flex-wrap:wrap;align-items:flex-start}footer>div{min-width:0}.footer-tagline{font-family:Arial,Helvetica,sans-serif!important;font-size:.8125rem!important;margin-top:12px}.footer-legal{display:flex;flex-direction:column;gap:12px}.footer-legal>a{display:flex;align-items:center;min-height:44px;text-underline-offset:5px}
 .legal-page{max-width:850px;margin:45px auto 90px;padding:0 35px}.legal-page>h1{font-size:var(--heading);margin:28px 0 55px}.legal-page section{margin-top:38px}.legal-page h2{font-size:clamp(1.8rem,3vw,2.5rem);margin-bottom:18px}.legal-page a{overflow-wrap:anywhere;text-underline-offset:4px}.legal-page li+li{margin-top:12px}.legal-page blockquote{margin:24px 0;border-left:2px solid var(--ink);padding:12px 22px;background:#faf7f7}
-@media(max-width:650px){.booking-contact .contact-links{grid-template-columns:1fr}.legal-page{margin:30px auto 60px;padding:0 6%}.legal-page>h1{margin-bottom:38px}footer{gap:30px}}
+@media(max-width:650px){.legal-page{margin:30px auto 60px;padding:0 6%}.legal-page>h1{margin-bottom:38px}footer{gap:30px}}
 .legal-page>p.eyebrow{font-family:Arial,Helvetica,sans-serif;font-size:.8125rem;line-height:1.5}
