@@ -3,15 +3,18 @@ import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Script } from 'node:vm';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const html = await readFile(join(root, 'index.html'), 'utf8');
+const pages = ['index.html', 'privacy.html', 'terms.html'];
+for (const page of pages) {
+const html = await readFile(join(root, page), 'utf8');
 for (const pattern of [/<title>[^<]+<\/title>/i, /name="description" content="[^"]+"/i, /rel="icon"/i]) {
   if (!pattern.test(html)) throw new Error(`Missing page metadata: ${pattern}`);
 }
 for (const file of ['config.js', 'site.js']) new Script(await readFile(join(root, file), 'utf8'), { filename: file });
 for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
   const ref = match[1];
-  if (/^(?:https?:|data:|#|mailto:)/.test(ref)) continue;
+  if (/^(?:https?:|data:|#|mailto:|tel:)/.test(ref)) continue;
   await stat(join(root, ref.split(/[?#]/)[0]));
+}
 }
 async function checkAssets(dir) {
   for (const item of await readdir(dir, { withFileTypes: true })) {
@@ -27,7 +30,7 @@ async function checkAssets(dir) {
 await checkAssets(join(root, 'images')); await checkAssets(join(root, 'fonts'));
 const output = join(root, 'public');
 await rm(output, { recursive: true, force: true }); await mkdir(output);
-for (const file of ['index.html', 'styles.css', 'config.js', 'site.js', 'images', 'fonts']) {
+for (const file of [...pages, 'styles.css', 'config.js', 'site.js', 'images', 'fonts']) {
   await cp(join(root, file), join(output, file), { recursive: true });
 }
 console.log('Build passed. Static website ready in public/.');

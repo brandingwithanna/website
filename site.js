@@ -12,11 +12,16 @@ button.hidden = false;
 const backup = bookingLink.closest(".booking-direct");
 backup.hidden = true;
 let loadTimer;
+const themedBookingUrl = new URL(bookingUrl);
+themedBookingUrl.searchParams.set("primary_color", "3e0000");
+themedBookingUrl.searchParams.set("text_color", "3e0000");
+themedBookingUrl.searchParams.set("background_color", "ffffff");
 window.addEventListener("message", event => {
   const frame = document.querySelector("#calendly-embed iframe");
   if (event.origin !== "https://calendly.com" || !frame || event.source !== frame.contentWindow) return;
   if (event.data?.event === "calendly.event_type_viewed" || event.data?.event === "calendly.date_and_time_selected") {
     clearTimeout(loadTimer);
+    calendar.setAttribute("aria-busy", "false");
     backup.hidden = true;
     status.textContent = "Choose an available date below.";
   }
@@ -27,19 +32,20 @@ button.addEventListener("click", () => {
   button.setAttribute("aria-expanded", "true");
   if (started) { calendar.scrollIntoView({block:"start"}); return; }
   started = true;
+  calendar.setAttribute("aria-busy", "true");
   const script = document.createElement("script");
   script.src = "https://assets.calendly.com/assets/external/widget.js";
   script.async = true;
-  const fail = () => { backup.hidden = false; status.textContent = "The calendar couldn’t load. Please use the Calendly link above to choose a time."; };
+  const fail = () => { calendar.setAttribute("aria-busy", "false"); backup.hidden = false; status.textContent = "The calendar couldn’t load. Please use the Calendly link above to choose a time."; };
   backup.hidden = true;
-  status.textContent = "Loading booking calendar…";
+  status.textContent = "Loading your calendar. This can take a few seconds…";
   loadTimer = setTimeout(fail, 15000);
   script.onerror = () => { clearTimeout(loadTimer); fail(); started = false; script.remove(); };
   script.onload = () => {
     if (!window.Calendly) { fail(); started = false; return; }
     try {
       document.getElementById("calendly-embed").replaceChildren();
-      window.Calendly.initInlineWidget({url:bookingUrl,parentElement:document.getElementById("calendly-embed")});
+      window.Calendly.initInlineWidget({url:themedBookingUrl.href,parentElement:document.getElementById("calendly-embed")});
       // The Calendly message confirms the booking interface is ready.
     } catch { fail(); started = false; }
   };
